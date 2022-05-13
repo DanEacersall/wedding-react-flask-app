@@ -1,4 +1,5 @@
-from flask import Flask, jsonify
+from flask import Flask 
+from flask import jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS, cross_origin
 from datetime import datetime
@@ -33,18 +34,22 @@ class Comment(db.Model):
 		return f"Comment('{self.date_posted}', '{self.content}')"
 
 def db_serializer(user):
-	return {
+	return (
 		'id': user.id,
 		'name': user.username,
 		'response': user.response
 
-	}
+	)
 
 @app.route('/time/<id>')
 def get_current_time(id):
 	user = User.query.get(id)
 	serialized_user = db_serializer(user)
-	return jsonify(serialized_user)
+	return serialized_user
+
+@app.route("/home")
+def home():
+	return {"members": ["member"]}
 
 if __name__ == "__main__":
 

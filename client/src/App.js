@@ -1,15 +1,31 @@
-
-import './App.css';
+import React, { useState, useEffect } from 'react'
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
+
+  const [data, setData] = useState()
+
+  useEffect(() => {
+      fetch("http://127.0.0.1:5000/time/1").then(data => data.json())
+      .then(data => {
         
-       
-      </header>
+        setData(data)
+        console.log(data)
+      }
+      )
+  }, []);
+
+  return (
+    <div>
+      {data.name}
     </div>
-  );
+  )
+    
+
+
+
+
 }
 
-export default App;
+
+
+export default App
