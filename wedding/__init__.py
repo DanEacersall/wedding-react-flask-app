@@ -17,9 +17,16 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
 configure = dotenv_values(".env")
 app.config['JWT_SECRET_KEY'] = configure['JWT_SECRET']
 
+
 jwt = JWTManager(app)
 
 CORS(app)
+cors = CORS(app, resources={
+    r"/*": {
+        "origins": "*"
+    }
+})
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 from wedding import routes
 

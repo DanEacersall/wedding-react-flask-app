@@ -7,12 +7,28 @@ export const Login = () => {
 const [data, setData] = useState({})
 const [code, setCode] = useState("");
 
+useEffect(() => {
+    fetch("http://127.0.0.1:5000/time/1").then(data => data.json())
+      .then(data => {
+
+        setData(data)
+        console.log(data)
+
+      }
+      )
+  }, []);
+
+
 const handleClick = () => {
 
     const opts = {
         method: 'POST',
+        headers: {
+            "Content-Type": "application/json"
+        },
         body: JSON.stringify({
-            "name:": code
+            "name": data.name,
+            "id": data.id
         })
     }
     fetch('http://127.0.0.1:5000/token', opts)
@@ -28,16 +44,7 @@ const handleClick = () => {
 }
 
 
-useEffect(() => {
-    fetch("http://127.0.0.1:5000/time/1").then(data => data.json())
-      .then(data => {
 
-        setData(data)
-        console.log(data)
-
-      }
-      )
-  }, []);
 
   return (
     <div className="App-header">
