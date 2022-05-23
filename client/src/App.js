@@ -1,33 +1,21 @@
-import React, { useState, useEffect } from 'react'
-import './App.css';
+import React from 'react';
+import { Login } from './pages/login';
+import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 
 function App() {
-
-  const [data, setData] = useState({})
-
-  useEffect(() => {
-    fetch("http://127.0.0.1:5000/time/1").then(data => data.json())
-      .then(data => {
-
-        setData(data)
-        console.log(data)
-
-      }
-      )
-  }, []);
-
   return (
-    <div className="App-header">
-      {data.name}
-    </div>
-  )
+    <Router>
+        <div>
+          <Switch>
+            <Route path="/home">
+              <Login />
+            </Route>
+          </Switch>
 
+        </div>
 
-
-
-
+    </Router>
+  );
 }
-
-
 
 export default App
