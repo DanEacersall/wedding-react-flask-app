@@ -1,8 +1,7 @@
-from unicodedata import name
-from requests import request
 from wedding.models import User, Comment
 from wedding import app
-from flask import jsonify
+from flask import jsonify, request
+
 
 from flask_jwt_extended import create_access_token
 from flask_jwt_extended import get_jwt
@@ -28,9 +27,9 @@ def home():
 
 @app.route('/token', methods=['POST'])
 def create_token():
-	username = request.json.get("name", None)
+	name = request.json.get("name", None)
 	
-	if username != "Harry":
+	if name != "Harry":
 		return jsonify({"msg": "No good mate"}), 401
 	
 	access_token = create_access_token(identity=name)

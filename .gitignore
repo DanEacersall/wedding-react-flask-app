@@ -3,6 +3,7 @@ venv/
 site.db
 node_modules/
 __pycache__/
+/wedding/test.py
 
 /.pnp
 .pnp.js
