@@ -5,6 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS, cross_origin
 import time
 
+
 from flask_jwt_extended import JWTManager
 
 

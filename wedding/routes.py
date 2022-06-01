@@ -1,4 +1,6 @@
 from unicodedata import name
+
+from sqlalchemy import null
 from wedding.models import User, Comment
 from wedding import app
 from flask import jsonify, request
@@ -17,6 +19,7 @@ def db_serializer(user):
 
 	}
 
+
 @app.route('/time/<id>')
 @cross_origin(origin='*', headers=['Content-Type','Authorization'])
 def get_current_time(id):
@@ -28,14 +31,19 @@ def get_current_time(id):
 def home():
 	return {"members": ["member"]}
 
-@app.route('/token', methods=['POST', 'GET'])
+@app.route('/token', methods=['POST'])
 @cross_origin(origin='*', headers=['Content-Type','Authorization'])
 def create_token():
-	json_password = request.json.get("name", None)
+	json_password = request.json.get("password", None)
 	json_id = request.json.get("id", None)
 	user = User.query.get(json_id)
-	if json_password != user.username:
-		return jsonify({"msg": "No good mate"}), 401
-	
-	access_token = create_access_token(identity=json_password)
-	return jsonify(access_token=access_token)   
+	if user.verify_password(json_password) != True:
+		return {'response': 'incorrect password'}, 401
+	if user.verify_password(json_password) == True:
+		access_token = create_access_token(identity=json_password)
+		return jsonify(access_token=access_token, response= 'success')  
+
+@app.route('verify', method=['POST'])
+@jwt_required()
+def verify():
+	return null
