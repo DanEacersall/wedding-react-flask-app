@@ -41,9 +41,14 @@ def create_token():
 		return {'response': 'incorrect password'}, 401
 	if user.verify_password(json_password) == True:
 		access_token = create_access_token(identity=json_password)
-		return jsonify(access_token=access_token, response= 'success')  
+		user_data = user.response
+		return jsonify(access_token=access_token, response= 'success', user_data=user_data)  
 
-@app.route('verify', method=['POST'])
-@jwt_required()
+@app.route('/verify', methods=['POST'])
+@cross_origin(origin='*', headers=['Content-Type','Authorization'])
+@jwt_required
 def verify():
-	return null
+	rsvp = request.json.get("response", None)
+	negative_response = not rsvp
+
+	return jsonify(negative_response)

@@ -1,18 +1,26 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Login } from './pages/login';
-import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
+import { Respond } from './pages/respond';
+import {BrowserRouter as Router, Route, Switch, Link} from 'react-router-dom';
+import { UserContext } from "./UserContext"
+
 
 function App() {
+const [verify, setVerify] = useState(null);
+
   return (
     <Router>
-        <div>
+      
           <Switch>
-            <Route path="/home">
-              <Login />
-            </Route>
+            <UserContext.Provider value={{ verify, setVerify}}>
+            <Route path="/respond"><Respond /></Route>
+            <Route path="/home"><Login /></Route>
+            </UserContext.Provider>
+            
+           
           </Switch>
-
-        </div>
+      <div><nav><ul><li><Link to="/home">Home</Link></li></ul></nav></div>
+      <div><nav><ul><li><Link to="/respond">Respond</Link></li></ul></nav></div> 
 
     </Router>
   );
