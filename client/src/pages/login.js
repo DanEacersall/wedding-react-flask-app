@@ -10,9 +10,10 @@ export const Login = () => {
 
 const [data, setData] = useState({});
 const [code, setCode] = useState("");
+const [pass, setPass] = useState();
 const token = sessionStorage.getItem("token");
 const json_id = sessionStorage.getItem("id");
-console.log(token + "errrorrrrrrrrrrrrr")
+const token_session = sessionStorage.getItem("session");
 const { verify, setVerify } = useContext(UserContext);
 const id = data.id
 
@@ -40,6 +41,7 @@ const handleClick = () => {
             "id": id
         })
     }
+    sessionStorage.removeItem("session")
     fetch('http://127.0.0.1:5000/token', opts)
     .then(resp => {
         if(resp.status === 200) return resp.json();
@@ -61,7 +63,7 @@ const handleClick = () => {
         }
             
         else if(data.response === 'incorrect password')
-            setVerify(data)
+            setPass(data.response)
             
 
     
@@ -87,6 +89,8 @@ const redirect_response = () => {
             <h1>Enter Your Code</h1>   
                 <input type="text" placeholder='CODE' value={code} onChange={(e) => setCode(e.target.value)} />
                 <button onClick={handleClick}>Submit</button>
+                <div>{sessionStorage.getItem("session")}</div>
+                <div>{pass}</div>
             </div>
         
         }
