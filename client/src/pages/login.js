@@ -11,7 +11,8 @@ export const Login = () => {
 const [data, setData] = useState({});
 const [code, setCode] = useState("");
 const token = sessionStorage.getItem("token");
-
+const json_id = sessionStorage.getItem("id");
+console.log(token + "errrorrrrrrrrrrrrr")
 const { verify, setVerify } = useContext(UserContext);
 const id = data.id
 
@@ -52,8 +53,10 @@ const handleClick = () => {
         if(data.access_token)
         {
             sessionStorage.setItem("token", data.access_token)
+            sessionStorage.setItem("id", data.json_id)
             console.log(data)
             setVerify(data)
+
 
         }
             
@@ -70,6 +73,9 @@ const handleClick = () => {
 
 }
 
+const redirect_response = () => {
+    <Redirect to="/respond"/>
+}
 
 
 
@@ -84,6 +90,8 @@ const handleClick = () => {
             </div>
         
         }
+        
+        
       <div>{data.name}</div>
       
      

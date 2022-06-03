@@ -1,8 +1,8 @@
 from unicodedata import name
 
-from sqlalchemy import null
+from sqlalchemy import null, true
 from wedding.models import User, Comment
-from wedding import app
+from wedding import app, db
 from flask import jsonify, request
 from flask_cors import cross_origin
 
@@ -18,6 +18,14 @@ def db_serializer(user):
 		'response': user.response
 
 	}
+def going(user):
+	if user.response:
+		return "You are Going"
+	else:
+		return "Sorry you can't make it"
+
+
+
 
 
 @app.route('/time/<id>')
@@ -42,13 +50,17 @@ def create_token():
 	if user.verify_password(json_password) == True:
 		access_token = create_access_token(identity=json_password)
 		user_data = user.response
-		return jsonify(access_token=access_token, response= 'success', user_data=user_data)  
+		return jsonify(access_token=access_token, response= 'success', user_data=user_data, json_id=json_id)  
 
 @app.route('/verify', methods=['POST'])
 @cross_origin(origin='*', headers=['Content-Type','Authorization'])
-@jwt_required
+@jwt_required()
 def verify():
 	rsvp = request.json.get("response", None)
-	negative_response = not rsvp
+	json_id = request.json.get("id", None)
+	user = User.query.get(json_id)
+	user.response = rsvp
+	db.session.commit()
+	text = going(user)
 
-	return jsonify(negative_response)
+	return jsonify(rsvp, text)

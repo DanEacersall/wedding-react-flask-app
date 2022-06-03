@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Login } from './pages/login';
 import { Respond } from './pages/respond';
 import {BrowserRouter as Router, Route, Switch, Link} from 'react-router-dom';
@@ -7,6 +7,7 @@ import { UserContext } from "./UserContext"
 
 function App() {
 const [verify, setVerify] = useState(null);
+const providerValue = useMemo(() => ({verify, setVerify}), [verify, setVerify])
 
   return (
     <Router>

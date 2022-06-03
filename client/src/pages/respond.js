@@ -1,35 +1,44 @@
 import { UserContext } from '../UserContext';
 import React, { useState, useEffect, useContext } from 'react';
+import {BrowserRouter as Redirect} from 'react-router-dom';
+import { Login } from './login';
 
 export function Respond() {
 
-const { verify, setVerify } = useContext(UserContext);
-const [going, setGoing] = useState(verify.user_data)
+const token = sessionStorage.getItem("token");
+const json_id = sessionStorage.getItem("id");
+
+const [going, setGoing] = useState(false)
+console.log(going)
 
 const handleGoing = () => {
     going ? setGoing(false): setGoing(true);
-        console.log(going)
-        console.log(verify.access_token)
+    
     }
 
-const submitResponse = () => {
 
+
+const submitResponse = () => {
+        console.log(token)
         const opts = {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": "Bearer" + verify.access_token
+                "Authorization": "Bearer " + token
             },
             body: JSON.stringify({
                 
-                "response": going
+                "response": going,
+                "id": json_id
                 
             })
         }
         fetch('http://127.0.0.1:5000/verify', opts)
         .then(resp => {
             if(resp.status === 200) return resp.json();
+            if(resp.status === 401) sessionStorage.removeItem("token") || <Login />
             else return ('Erroooor')
+
             
         })
         .then(data => {
@@ -48,12 +57,19 @@ const submitResponse = () => {
 
 
     return(
-        <div>
-            <button onClick={handleGoing}>Going</button>
-            <button onClick={submitResponse}>Submit</button>
+        <div className="App-header">
+            
+            {(token && token!=="" && token !==undefined) ?
+                <div>
+                <div>Welcome</div>
+                <button onClick={handleGoing}>Going</button>
+                <button onClick={submitResponse}>Submit</button>
+                </div> 
+                : <Login />
+            
+            }
             
         </div>
-        
         
     )
 }
