@@ -75,12 +75,6 @@ const handleClick = () => {
 
 }
 
-const redirect_response = () => {
-    <Redirect to="/respond"/>
-}
-
-
-
   return (
     <div className="App-header">
         
@@ -96,11 +90,14 @@ const redirect_response = () => {
         }
         
         
-      <div>{data.name}</div>
+      <div>{(token_session != "Your Session has expired try again") ?
+                <div>{"Welcome " + data.name}</div> 
+                : <div>{data.dietary}</div>
       
-     
+    }
         
         
+    </div>
     </div>
   )
 

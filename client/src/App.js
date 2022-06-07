@@ -16,6 +16,7 @@ const providerValue = useMemo(() => ({verify, setVerify}), [verify, setVerify])
             <UserContext.Provider value={{ verify, setVerify}}>
             <Route path="/respond"><Respond /></Route>
             <Route path="/home"><Login /></Route>
+            
             </UserContext.Provider>
             
            

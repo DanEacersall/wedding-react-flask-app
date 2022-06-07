@@ -1,7 +1,7 @@
 from unicodedata import name
 
 from sqlalchemy import null, true
-from wedding.models import User, Comment
+from wedding.models import User
 from wedding import app, db
 from flask import jsonify, request
 from flask_cors import cross_origin
@@ -15,7 +15,8 @@ def db_serializer(user):
 	return {
 		'id': user.id,
 		'name': user.username,
-		'response': user.response
+		'response': user.response,
+		'dietary': user.dietary
 
 	}
 def going(user):
@@ -58,9 +59,13 @@ def create_token():
 def verify():
 	rsvp = request.json.get("response", None)
 	json_id = request.json.get("id", None)
+	diet = request.json.get("dietary", None)
 	user = User.query.get(json_id)
 	user.response = rsvp
+	if diet == None:
+		diet = 'None' 
+	user.dietary = diet
 	db.session.commit()
 	text = going(user)
 
-	return jsonify(rsvp, text)
+	return jsonify(rsvp, text, diet)

@@ -8,8 +8,10 @@ export function Respond() {
 const token = sessionStorage.getItem("token");
 const json_id = sessionStorage.getItem("id");
 const token_verify = sessionStorage.getItem("session");
+const { verify, setVerify } = useContext(UserContext);
 
 const [going, setGoing] = useState(false)
+const [dietary, setDietary] = useState("")
 const [refresh, setRefresh] = useState(0)
 console.log(going)
 
@@ -32,6 +34,7 @@ const submitResponse = () => {
             body: JSON.stringify({
                 
                 "response": going,
+                "dietary": dietary,
                 "id": json_id
                 
             })
@@ -52,7 +55,9 @@ const submitResponse = () => {
             console.log(data.msg)
             setRefresh(data)
             if(data[0])
+            
             setGoing(data[0])
+            setDietary(data[2])
             return <Login />
             
             
@@ -79,10 +84,12 @@ const submitResponse = () => {
                 <div>Welcome</div>
                 <button onClick={handleGoing}>Going</button>
                 <button onClick={submitResponse}>Submit</button>
+                <input type="text" placeholder='Other' value={dietary} onChange={(e) => setDietary(e.target.value)} />
                     <div>{(going) ? "Going"
                     : "Not Going"
                     }
                     </div>
+                    <div>{dietary}</div>
                 </div> 
                 : <Login />
             

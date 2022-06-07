@@ -14,11 +14,13 @@ from flask_jwt_extended import JWTManager
 
 
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///C:\\Users\\danie\\Desktop\\Programming\\test_app\\site.db'
 db = SQLAlchemy(app)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
+
+
 configure = dotenv_values(".env")
 app.config['JWT_SECRET_KEY'] = configure['JWT_SECRET']
-app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(seconds=5)
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(seconds=10)
 app.config["JWT_REFRESH_TOKEN_EXPIRES"] = timedelta(days=30)
 
 
