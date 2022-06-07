@@ -28,7 +28,7 @@ def going(user):
 
 
 
-
+#gets the users name from the database, serializes and returns to client
 @app.route('/time/<id>')
 @cross_origin(origin='*', headers=['Content-Type','Authorization'])
 def get_current_time(id):
@@ -40,6 +40,8 @@ def get_current_time(id):
 def home():
 	return {"members": ["member"]}
 
+#receives password from client, checks if password hash is correct by user id obtained in /time/<id> 
+#returns access token and user response as boolean value
 @app.route('/token', methods=['POST'])
 @cross_origin(origin='*', headers=['Content-Type','Authorization'])
 def create_token():
